@@ -1,11 +1,12 @@
-import { hello } from './constants'
+import * as State from './state'
 import '../assets/scss/style.scss'
 
+declare global {
+    interface Window {
+        threeState: State.IState
+    }
+}
+
 window.addEventListener('DOMContentLoaded', () => {
-    const rootElement = document.getElementById('app')
-    if (!rootElement) return
-    
-    const helloElement = document.createElement('h1')
-    helloElement.textContent = hello
-    rootElement.appendChild(helloElement)
+    window.threeState = State.load(document.getElementById('app')!)
 })

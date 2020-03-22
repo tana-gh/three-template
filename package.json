@@ -1,5 +1,5 @@
 {
-  "name": "typescript-template",
+  "name": "three-template",
   "version": "1.0.0",
   "main": "src/index.js",
   "author": "tana-gh <yozoranotakaku@gmail.com>",
@@ -10,7 +10,10 @@
     "build": "webpack --config ./build/webpack.prod.config.js"
   },
   "dependencies": {
-    "@babel/runtime": "^7.9.0"
+    "@babel/runtime": "^7.9.0",
+    "ramda": "^0.27.0",
+    "rxjs": "^6.5.4",
+    "three": "^0.114.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
@@ -19,6 +22,8 @@
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.1",
     "@types/jest": "^25.1.4",
+    "@types/ramda": "^0.26.44",
+    "@types/three": "^0.103.2",
     "autoprefixer": "^9.7.4",
     "babel-jest": "^25.1.0",
     "babel-loader": "^8.1.0",
