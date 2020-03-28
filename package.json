@@ -1,7 +1,7 @@
 {
   "name": "three-template",
   "version": "1.0.0",
-  "main": "dist/assets/js/main.bundle.js",
+  "main": "dist/main.bundle.js",
   "author": "tana-gh <yozoranotakaku@gmail.com>",
   "license": "MIT",
   "scripts": {
