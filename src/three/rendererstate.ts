@@ -81,7 +81,7 @@ const setRendererSize = (rendererState: IRendererState) => {
 
 const render = (rendererState: IRendererState, animationState: Animation.IAnimationState) => {
     R.forEach(
-        (s: SceneState.ISceneState) => s.render(rendererState.renderer)
+        (s: SceneState.ISceneState) => s.render(rendererState.renderer, animationState)
     )(Array.from(rendererState.scenes))
 }
 

@@ -1,5 +1,4 @@
 import * as THREE         from 'three'
-import * as Rx            from 'rxjs'
 import * as Animation     from '../utils/animation'
 import * as C             from '../utils/constants'
 import * as SceneState    from './scenestate'
@@ -8,37 +7,33 @@ import * as ModelCreator  from './modelcreator'
 
 export const create = (
     timestamp : number,
-    animations: Rx.Observable<Animation.IAnimationState>,
     sceneState: SceneState.ISceneState,
     parent    : THREE.Object3D
 ) => {
     const [ modelRoot, modelBone ] = ModelCreator.createModelRootAndBone()
 
+    const store = {}
+
     const displayobject: DisplayObject.IDisplayObject = {
         timestamp,
         state: 'init',
-        dispose() {
-            subscription.unsubscribe()
-        },
+        dispose() {},
         rootElement: modelRoot,
         elements: {
             modelRoot
+        },
+        updateByAnimation(animation) {
+            DisplayObject.updateByAnimation(
+                this,
+                sceneState,
+                parent,
+                'main',
+                store,
+                updateByAnimation(modelRoot, modelBone)
+            )(animation)
         }
     }
     sceneState.objects.add(displayobject)
-
-    const store = {}
-
-    const subscription = animations.subscribe(
-        DisplayObject.updateByAnimation(
-            displayobject,
-            sceneState,
-            parent,
-            'main',
-            store,
-            updateByAnimation(modelRoot, modelBone)
-        )
-    )
 
     return displayobject
 }

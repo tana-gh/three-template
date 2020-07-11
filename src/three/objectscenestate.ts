@@ -1,6 +1,5 @@
 import * as THREE         from 'three'
 import * as Rx            from 'rxjs'
-import * as Animation     from '../utils/animation'
 import * as Interaction   from '../utils/interaction'
 import * as C             from '../utils/constants'
 import * as Random        from '../utils/random'
@@ -10,7 +9,6 @@ import * as Models        from './models'
 import * as Lights        from './lights'
 
 export const create = (
-    animations  : Rx.Observable<Animation.IAnimationState>,
     interactions: Rx.Observable<Interaction.IInteraction>,
     times       : Rx.Observable<Date>,
     random      : Random.IRandom,
@@ -32,7 +30,8 @@ export const create = (
         camera,
         behaviours: new Set(),
         objects   : new Set(),
-        render(renderer) {
+        render(renderer, animation) {
+            this.objects.forEach(obj => obj.updateByAnimation(animation))
             render(this, renderer)
         },
         dispose() {
@@ -42,14 +41,12 @@ export const create = (
 
     Models.create(
         Date.now(),
-        animations,
         sceneState,
         scene
     )
 
     Lights.create(
         Date.now(),
-        animations,
         sceneState,
         scene
     )

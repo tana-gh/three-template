@@ -1,5 +1,6 @@
 import * as THREE         from 'three'
 import * as R             from 'ramda'
+import * as Animation     from '../utils/animation'
 import * as Behaviour     from './behaviour'
 import * as DisplayObject from './displayobject'
 
@@ -8,7 +9,7 @@ export interface ISceneState {
     camera    : THREE.Camera
     behaviours: Set<Behaviour.IBehaviour>
     objects   : Set<DisplayObject.IDisplayObject>
-    render    : (renderer: THREE.WebGLRenderer) => void
+    render    : (renderer: THREE.WebGLRenderer, animation: Animation.IAnimationState) => void
     dispose   : () => void
 }
 

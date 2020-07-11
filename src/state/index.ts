@@ -20,7 +20,7 @@ export const load = (parent: HTMLElement): IState => {
     const [width, height] = [parent.clientWidth, parent.clientHeight]
     const rendererState   = RendererState.create(width, height)
     
-    const objectSceneState = ObjectSceneState.create(animations, interactions, times, random, rendererState.aspectObj)
+    const objectSceneState = ObjectSceneState.create(interactions, times, random, rendererState.aspectObj)
     
     RendererState.setScenes(rendererState, objectSceneState)
 

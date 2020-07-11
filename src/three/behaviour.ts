@@ -2,9 +2,10 @@ import * as Animation  from '../utils/animation'
 import * as SceneState from './scenestate'
 
 export interface IBehaviour {
-    timestamp: number
-    state    : string
-    dispose  : () => void
+    timestamp        : number
+    state            : string
+    dispose          : () => void
+    updateByAnimation: (animationState: Animation.IAnimationState) => void
 }
 
 export const updateByAnimation = (
