@@ -1,16 +1,16 @@
 import * as THREE         from 'three'
-import * as Animation     from '../utils/animation'
-import * as C             from '../utils/constants'
-import * as SceneState    from './scenestate'
-import * as DisplayObject from './displayobject'
-import * as ModelCreator  from './modelcreator'
+import * as Animation     from '../../utils/animation'
+import * as C             from '../../utils/constants'
+import * as SceneState    from '../scenestate'
+import * as DisplayObject from '../displayobject'
+import * as CubesCreator  from './cubescreator'
 
 export const create = (
     timestamp : number,
     sceneState: SceneState.ISceneState,
     parent    : THREE.Object3D
-) => {
-    const [ modelRoot, modelBone ] = ModelCreator.createModelRootAndBone()
+): DisplayObject.IDisplayObject => {
+    const [ root, bone ] = CubesCreator.createCubeRootAndBone()
 
     const store = {}
 
@@ -18,9 +18,9 @@ export const create = (
         timestamp,
         state: 'init',
         dispose() {},
-        rootElement: modelRoot,
+        rootElement: root,
         elements: {
-            modelRoot
+            root
         },
         updateByAnimation(animation) {
             DisplayObject.updateByAnimation(
@@ -29,7 +29,7 @@ export const create = (
                 parent,
                 'main',
                 store,
-                updateByAnimation(modelRoot, modelBone)
+                updateByAnimation(root, bone)
             )(animation)
         }
     }
@@ -39,16 +39,17 @@ export const create = (
 }
 
 const updateByAnimation = (
-    modelRoot: THREE.Object3D,
-    modelBone: THREE.Object3D
+    root: THREE.Object3D,
+    bone: THREE.Object3D
 ) => (obj: DisplayObject.IDisplayObject, animation: Animation.IAnimationState, store: any) => {
     switch (obj.state) {
-        case 'main':
-            const th = animation.progress / 1000.0 * 2.0 * Math.PI * C.frequency.modelTheta * C.frequency.coefficient
-            modelRoot.rotateX(th)
-            const ph = -animation.progress / 1000.0 * 2.0 * Math.PI * C.frequency.modelPhi * C.frequency.coefficient
-            modelBone.rotateZ(ph)
+        case 'main': {
+            const th = animation.progress / 1000.0 * 2.0 * Math.PI * C.frequency.cubeTheta * C.frequency.coefficient
+            root.rotateX(th)
+            const ph = -animation.progress / 1000.0 * 2.0 * Math.PI * C.frequency.cubePhi * C.frequency.coefficient
+            bone.rotateZ(ph)
             return
+        }
         default:
             throw 'Invalid state'
     }

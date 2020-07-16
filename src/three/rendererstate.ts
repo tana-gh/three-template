@@ -47,7 +47,7 @@ export const create = (
     }
 }
 
-export const setScenes = (renderer: IRendererState, ...scenes: SceneState.ISceneState[]) => {
+export const addScenes = (renderer: IRendererState, ...scenes: SceneState.ISceneState[]): void => {
     R.forEach((s: SceneState.ISceneState) => renderer.scenes.add(s))(scenes)
 }
 
@@ -80,6 +80,7 @@ const setRendererSize = (rendererState: IRendererState) => {
 }
 
 const render = (rendererState: IRendererState, animationState: Animation.IAnimationState) => {
+    rendererState.renderer.clear()
     R.forEach(
         (s: SceneState.ISceneState) => s.render(rendererState.renderer, animationState)
     )(Array.from(rendererState.scenes))

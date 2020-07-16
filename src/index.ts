@@ -8,5 +8,6 @@ declare global {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    window.threeState = State.load(document.getElementById('app')!)
+    const app = document.getElementById('app')
+    if (app) window.threeState = State.load(app)
 })

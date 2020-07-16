@@ -1,16 +1,16 @@
 import * as THREE from 'three'
 import * as R     from 'ramda'
 
-export const createLightBone = () => {
-    const lights    = createLights(12)
-    const lightBone = new THREE.Bone()
-    R.forEach(l => lightBone.add(l), lights)
+export const createLightRoot = (): THREE.Object3D => {
+    const lights = createLights(12)
+    const root   = new THREE.Bone()
+    R.forEach(l => root.add(l), lights)
     
-    return lightBone
+    return root
 }
 
 const createLights = (count: number) => {
-    return comp(count)(R.range(0, count))
+    return composit(count)(R.range(0, count))
 }
 
 const toHue = (count: number) => (x: number) => R.clamp(0.0, 1.0, x / count)
@@ -25,11 +25,11 @@ const pos = () => Math.random() * 10.0 - 5.0
 
 const axis = () => new THREE.Vector3(pos(), pos(), pos())
 
-const setAttr = (light: THREE.Light) => {
-    light.translateOnAxis(axis(), 1.0)
+const setAttr = (mesh: THREE.Light) => {
+    mesh.translateOnAxis(axis(), 1.0)
 }
 
-const comp = (count: number) => R.pipe(
+const composit = (count: number) => R.pipe(
     R.map(toHue(count)),
     R.map(toHSL),
     R.map(toLight),

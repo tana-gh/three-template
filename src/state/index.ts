@@ -1,9 +1,11 @@
-import * as Animation        from '../utils/animation'
-import * as Interaction      from '../utils/interaction'
-import * as Time             from '../utils/time'
-import * as Random           from '../utils/random'
-import * as RendererState    from '../three/rendererstate'
-import * as ObjectSceneState from '../three/objectscenestate'
+import * as Animation              from '../utils/animation'
+import * as Interaction            from '../utils/interaction'
+import * as Time                   from '../utils/time'
+import * as Random                 from '../utils/random'
+import * as C                      from '../utils/constants'
+import * as RendererState          from '../three/rendererstate'
+import * as PerspectiveSceneState  from '../three/perspectivescenestate'
+import * as OrthographicSceneState from '../three/orthographicscenestate'
 
 export interface IState {
     rendererState: RendererState.IRendererState
@@ -20,16 +22,30 @@ export const load = (parent: HTMLElement): IState => {
     const [width, height] = [parent.clientWidth, parent.clientHeight]
     const rendererState   = RendererState.create(width, height)
     
-    const objectSceneState = ObjectSceneState.create(interactions, times, random, rendererState.aspectObj)
-    
-    RendererState.setScenes(rendererState, objectSceneState)
+    const perspectiveSceneState  = PerspectiveSceneState .create(interactions, times, random, rendererState.aspectObj)
+    const orthographicSceneState = OrthographicSceneState.create(interactions, times, random, rendererState.aspectObj)
 
-    const subscription = animations.subscribe(a => rendererState.render(a))
+    RendererState.addScenes(rendererState, perspectiveSceneState, orthographicSceneState)
 
+    let total = 0.0
+    const subscription = animations.subscribe(a => {
+        rendererState.render(a)
+        
+        if (a.total - total >= 100.0) {
+            fps.textContent = toFpsText(a.progress)
+            total = Math.floor(a.total)
+        }
+    })
+
+    rendererState.renderer.domElement.className = C.classNames.three
     parent.appendChild(rendererState.renderer.domElement)
 
     const resize = () => rendererState.resize(parent.clientWidth, parent.clientHeight)
     window.addEventListener('resize', resize)
+
+    const fps = document.createElement('p')
+    fps.className = C.classNames.fps
+    parent.appendChild(fps)
 
     const dispose = () => {
         subscription.unsubscribe()
@@ -38,4 +54,8 @@ export const load = (parent: HTMLElement): IState => {
     }
 
     return { rendererState, dispose }
+}
+
+const toFpsText = (progress: number) => {
+    return progress === 0.0 ? '' : `${(1000.0 / progress).toFixed(1)} fps`
 }

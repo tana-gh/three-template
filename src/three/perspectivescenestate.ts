@@ -5,18 +5,17 @@ import * as C             from '../utils/constants'
 import * as Random        from '../utils/random'
 import * as RendererState from './rendererstate'
 import * as SceneState    from './scenestate'
-import * as Models        from './models'
-import * as Lights        from './lights'
+import * as Cubes         from './objects/cubes'
+import * as Lights        from './objects/lights'
 
 export const create = (
     interactions: Rx.Observable<Interaction.IInteraction>,
     times       : Rx.Observable<Date>,
     random      : Random.IRandom,
     aspectObj   : RendererState.IAspect
-) => {
+): SceneState.ISceneState => {
     const scene  = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera
-    (
+    const camera = new THREE.PerspectiveCamera(
         C.perspectiveParams.fov,
         aspectObj.value,
         C.perspectiveParams.near,
@@ -25,21 +24,9 @@ export const create = (
     camera.position.set(0.0, 0.0, C.perspectiveParams.z)
     camera.lookAt(0.0, 0.0, 0.0)
 
-    const sceneState: SceneState.ISceneState = {
-        scene,
-        camera,
-        behaviours: new Set(),
-        objects   : new Set(),
-        render(renderer, animation) {
-            this.objects.forEach(obj => obj.updateByAnimation(animation))
-            render(this, renderer)
-        },
-        dispose() {
-            SceneState.dispose(this)
-        }
-    }
+    const sceneState = SceneState.create(scene, camera)
 
-    Models.create(
+    Cubes.create(
         Date.now(),
         sceneState,
         scene
@@ -52,12 +39,4 @@ export const create = (
     )
 
     return sceneState
-}
-
-const render = (
-    sceneState: SceneState.ISceneState,
-    renderer  : THREE.WebGLRenderer
-) => {
-    renderer.clearDepth()
-    renderer.render(sceneState.scene, sceneState.camera)
 }

@@ -13,14 +13,43 @@ export interface ISceneState {
     dispose   : () => void
 }
 
-export const setCameraSize = (camera: THREE.Camera, aspect: number) => {
-    if (camera instanceof THREE.PerspectiveCamera) {
+export const create = (scene: THREE.Scene, camera: THREE.Camera): ISceneState => {
+    return {
+        scene,
+        camera,
+        behaviours: new Set(),
+        objects   : new Set(),
+        render(renderer, animation) {
+            this.objects.forEach(obj => obj.updateByAnimation(animation))
+            render(this, renderer)
+        },
+        dispose() {
+            dispose(this)
+        }
+    }
+}
+
+export const setCameraSize = (camera: THREE.Camera, aspect: number): void => {
+    if (camera instanceof THREE.OrthographicCamera) {
+        camera.left   = -aspect * 0.5
+        camera.right  =  aspect * 0.5
+        camera.updateProjectionMatrix()
+    }
+    else if (camera instanceof THREE.PerspectiveCamera) {
         camera.aspect = aspect
         camera.updateProjectionMatrix()
     }
 }
 
-export const dispose = (sceneState: ISceneState) => {
+const render = (
+    sceneState: ISceneState,
+    renderer  : THREE.WebGLRenderer
+) => {
+    renderer.clearDepth()
+    renderer.render(sceneState.scene, sceneState.camera)
+}
+
+const dispose = (sceneState: ISceneState) => {
     R.forEach((obj: Behaviour    .IBehaviour    ) => obj.dispose())(Array.from(sceneState.behaviours))
     R.forEach((obj: DisplayObject.IDisplayObject) => obj.dispose())(Array.from(sceneState.objects))
 }
