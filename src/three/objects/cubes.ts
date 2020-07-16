@@ -44,9 +44,9 @@ const updateByAnimation = (
 ) => (obj: DisplayObject.IDisplayObject, animation: Animation.IAnimationState, store: any) => {
     switch (obj.state) {
         case 'main': {
-            const th = animation.progress / 1000.0 * 2.0 * Math.PI * C.frequency.cubeTheta * C.frequency.coefficient
+            const th = animation.progress / 1000.0 * 2.0 * Math.PI * C.cube.theta * C.cube.coefficient
             root.rotateX(th)
-            const ph = -animation.progress / 1000.0 * 2.0 * Math.PI * C.frequency.cubePhi * C.frequency.coefficient
+            const ph = -animation.progress / 1000.0 * 2.0 * Math.PI * C.cube.phi * C.cube.coefficient
             bone.rotateZ(ph)
             return
         }

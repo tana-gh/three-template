@@ -16,12 +16,12 @@ export const create = (
 ): SceneState.ISceneState => {
     const scene  = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(
-        C.perspectiveParams.fov,
+        C.perspective.fov,
         aspectObj.value,
-        C.perspectiveParams.near,
-        C.perspectiveParams.far
+        C.perspective.near,
+        C.perspective.far
     )
-    camera.position.set(0.0, 0.0, C.perspectiveParams.z)
+    camera.position.set(0.0, 0.0, C.perspective.z)
     camera.lookAt(0.0, 0.0, 0.0)
 
     const sceneState = SceneState.create(scene, camera)

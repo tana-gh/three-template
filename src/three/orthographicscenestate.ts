@@ -18,10 +18,10 @@ export const create = (
          aspectObj.value * 0.5,
          0.5,
         -0.5,
-        C.orthographicParams.near,
-        C.orthographicParams.far
+        C.orthographic.near,
+        C.orthographic.far
     )
-    camera.position.set(0.0, 0.0, C.orthographicParams.z)
+    camera.position.set(0.0, 0.0, C.orthographic.z)
     camera.lookAt(0.0, 0.0, 0.0)
 
     const sceneState = SceneState.create(scene, camera)

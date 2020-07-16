@@ -28,12 +28,16 @@ export const load = (parent: HTMLElement): IState => {
     RendererState.addScenes(rendererState, perspectiveSceneState, orthographicSceneState)
 
     let total = 0.0
+    let count = 0
     const subscription = animations.subscribe(a => {
         rendererState.render(a)
         
-        if (a.total - total >= 100.0) {
-            fps.textContent = toFpsText(a.progress)
-            total = Math.floor(a.total)
+        const progress = a.total - total
+        count++;
+        if (progress >= C.fps.updateDelta) {
+            fps.textContent = toFpsText(progress / count)
+            total = a.total
+            count = 0
         }
     })
 

@@ -1,11 +1,9 @@
 import * as THREE from 'three'
 import * as R     from 'ramda'
-
-const cubeSize   = 0.15
-const boneLength = 1.0
+import * as C     from '../../utils/constants'
 
 export const createCubeRootAndBone = (): [ THREE.Object3D, THREE.Object3D ] => {
-    const cubes = createCubes(12)
+    const cubes = createCubes(C.cube.count)
     const bones = R.map(m => new THREE.Bone(), cubes)
     const dph   = 2.0 * Math.PI / cubes.length
 
@@ -36,21 +34,13 @@ const createCubes = (count: number) => {
 
 const toHue = (count: number) => (x: number) => R.clamp(0.0, 1.0, x / count)
 
-const toMaterial = (hue: number) => new THREE.MeshPhysicalMaterial({
-    color: new THREE.Color().setHSL(hue, 1.0, 0.8),
-    metalness: 0.5,
-    roughness: 0.5,
-    clearcoat: 0.5,
-    clearcoatRoughness: 0.5,
-    reflectivity: 1.0,
-    fog: true
-})
+const toMaterial = (hue: number) => new THREE.MeshPhysicalMaterial(C.cubeMaterial(hue))
 
-const geometry = () => new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize)
+const geometry = () => new THREE.BoxGeometry(C.cube.size, C.cube.size, C.cube.size)
 
 const toMesh = (material: THREE.Material) => new THREE.Mesh(geometry(), material)
 
-const axis = () => new THREE.Vector3(0.0, boneLength, 0.0)
+const axis = () => new THREE.Vector3(0.0, C.cube.boneLength, 0.0)
 
 const setAttr = (mesh: THREE.Mesh) => {
     mesh.translateOnAxis(axis(), 1.0)
