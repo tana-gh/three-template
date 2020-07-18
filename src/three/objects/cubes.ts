@@ -33,7 +33,7 @@ export const create = (
                 parent,
                 'main',
                 store,
-                updateByAnimation(root, bones)
+                updateByAnimation(root)
             )(animation)
         }
     }
@@ -43,15 +43,12 @@ export const create = (
 }
 
 const updateByAnimation = (
-    root : THREE.Object3D,
-    bones: THREE.Object3D[]
+    root : THREE.Object3D
 ) => (obj: DisplayObject.IDisplayObject, animation: Animation.IAnimationState, store: any) => {
     switch (obj.state) {
         case 'main': {
             const phi = animation.progress / 1000.0 * 2.0 * Math.PI * C.cube.phi * C.cube.coefficient
-            R.forEach(
-                (b: THREE.Object3D) => b.rotateZ(phi)
-            )(bones)
+            root.rotateZ(phi)
             return
         }
         default:

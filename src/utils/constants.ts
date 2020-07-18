@@ -20,7 +20,7 @@ export const interactiveRotation = {
 
 export const cube = {
     coefficient: 1.0,
-    phi        : 0.02,
+    phi        : -0.2,
     count      : 12,
     size       : 0.15,
     boneLength : 1.0
