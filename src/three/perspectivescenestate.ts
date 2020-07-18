@@ -1,12 +1,13 @@
-import * as THREE         from 'three'
-import * as Rx            from 'rxjs'
-import * as Interaction   from '../utils/interaction'
-import * as C             from '../utils/constants'
-import * as Random        from '../utils/random'
-import * as RendererState from './rendererstate'
-import * as SceneState    from './scenestate'
-import * as Cubes         from './objects/cubes'
-import * as Lights        from './objects/lights'
+import * as THREE               from 'three'
+import * as Rx                  from 'rxjs'
+import * as Interaction         from '../utils/interaction'
+import * as C                   from '../utils/constants'
+import * as Random              from '../utils/random'
+import * as RendererState       from './rendererstate'
+import * as SceneState          from './scenestate'
+import * as InteractiveRotation from './behaviours/interactiverotation'
+import * as Cubes               from './objects/cubes'
+import * as Lights              from './objects/lights'
 
 export const create = (
     interactions: Rx.Observable<Interaction.IInteraction>,
@@ -26,16 +27,25 @@ export const create = (
 
     const sceneState = SceneState.create(scene, camera)
 
-    Cubes.create(
-        Date.now(),
+    const now = Date.now()
+
+    const cubes = Cubes.create(
+        now,
         sceneState,
         scene
     )
 
-    Lights.create(
-        Date.now(),
+    const lights = Lights.create(
+        now,
         sceneState,
         scene
+    )
+
+    const interactiveRotation = InteractiveRotation.create(
+        now,
+        sceneState,
+        interactions,
+        cubes.elements.root
     )
 
     return sceneState

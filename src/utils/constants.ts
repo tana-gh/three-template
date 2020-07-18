@@ -13,6 +13,11 @@ export const perspective = {
     z   : 3.0
 }
 
+export const interactiveRotation = {
+    coefficient: 1.0,
+    theta      : 2.0
+}
+
 export const cube = {
     coefficient: 1.0,
     phi        : 0.02,

@@ -20,7 +20,9 @@ export const create = (scene: THREE.Scene, camera: THREE.Camera): ISceneState =>
         behaviours: new Set(),
         objects   : new Set(),
         render(renderer, animation) {
-            this.objects.forEach(obj => obj.updateByAnimation(animation))
+            R.forEach(
+                (obj: Behaviour.IBehaviour) => obj.updateByAnimation(animation)
+            )([ ...this.behaviours, ...this.objects ])
             render(this, renderer)
         },
         dispose() {
@@ -50,6 +52,7 @@ const render = (
 }
 
 const dispose = (sceneState: ISceneState) => {
-    R.forEach((obj: Behaviour    .IBehaviour    ) => obj.dispose())(Array.from(sceneState.behaviours))
-    R.forEach((obj: DisplayObject.IDisplayObject) => obj.dispose())(Array.from(sceneState.objects))
+    R.forEach(
+        (obj: Behaviour.IBehaviour) => obj.dispose()
+    )([ ...Array.from(sceneState.behaviours), ...Array.from(sceneState.objects) ])
 }
