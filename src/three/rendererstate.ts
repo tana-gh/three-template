@@ -3,14 +3,14 @@ import * as Rx         from 'rxjs'
 import * as R          from 'ramda'
 import * as Animation  from '../utils/animation'
 import * as SceneState from './scenestate'
+import * as Disposable from './disposable'
 
-export interface IRendererState {
+export interface IRendererState extends Disposable.IDisposable {
     renderer : THREE.WebGLRenderer
     scenes   : Set<SceneState.ISceneState>
     aspectObj: IAspect
     render   : (animationState: Animation.IAnimationState) => void
     resize   : (width: number, height: number) => void
-    dispose  : () => void
 }
 
 export interface IAspect {

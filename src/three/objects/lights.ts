@@ -1,8 +1,10 @@
 import * as THREE         from 'three'
+import * as R             from 'ramda'
 import * as Animation     from '../../utils/animation'
 import * as C             from '../../utils/constants'
 import * as SceneState    from '../scenestate'
 import * as DisplayObject from '../displayobject'
+import * as Disposable    from '../disposable'
 import * as LightsCreator from './lightscreator'
 
 export const create = (
@@ -10,14 +12,16 @@ export const create = (
     sceneState: SceneState.ISceneState,
     parent    : THREE.Object3D
 ): DisplayObject.IDisplayObject => {
-    const root = LightsCreator.createLightRoot()
+    const [ root, disposables ] = LightsCreator.createLightRoot()
 
     const store = {}
 
     const displayobject: DisplayObject.IDisplayObject = {
         timestamp,
         state: 'init',
-        dispose() {},
+        dispose() {
+            R.forEach<Disposable.IDisposable>(d => d.dispose())(disposables)
+        },
         rootElement: root,
         elements: {
             root

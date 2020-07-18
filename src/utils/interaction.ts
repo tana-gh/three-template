@@ -40,7 +40,7 @@ export const create = (
 }
 
 const getInteractionFromMouseEvent = (targetElement: HTMLElement | Window) => (e: MouseEvent) => {
-    const [position, movement] = getPosition(targetElement, e.clientX, e.clientY, e.movementX, e.movementY)
+    const [ position, movement ] = getPosition(targetElement, e.clientX, e.clientY, e.movementX, e.movementY)
 
     return <IInteraction>{
         position,
@@ -52,19 +52,19 @@ const getInteractionFromMouseEvent = (targetElement: HTMLElement | Window) => (e
 }
 
 const getInteractionFromTouchEvent = (targetElement: HTMLElement | Window) => ([prev, curr]: [TouchEvent | undefined, TouchEvent | undefined]) => {
-    const [moveX, moveY] =
+    const [ moveX, moveY ] =
         prev &&
         curr &&
         curr.touches[0] &&
         prev.touches[0] &&
         curr.touches[0].identifier === prev.touches[0].identifier ?
-        [curr.touches[0].clientX - prev.touches[0].clientX, curr.touches[0].clientY - prev.touches[0].clientY] :
-        [0.0, 0.0]
+        [ curr.touches[0].clientX - prev.touches[0].clientX, curr.touches[0].clientY - prev.touches[0].clientY ] :
+        [ 0.0, 0.0 ]
     const [position, movement] = curr && curr.touches[0] ?
                                  getPosition(targetElement, curr.touches[0].clientX, curr.touches[0].clientY, moveX, moveY) :
                                  prev && prev.touches[0] ?
                                  getPosition(targetElement, prev.touches[0].clientX, prev.touches[0].clientY, moveX, moveY) :
-                                 [undefined, undefined]
+                                 [ undefined, undefined ]
 
     if (position === undefined) {
         return undefined
@@ -80,11 +80,11 @@ const getInteractionFromTouchEvent = (targetElement: HTMLElement | Window) => ([
 }
 
 const getPosition = (targetElement: HTMLElement | Window, clientX: number, clientY: number, moveX: number, moveY: number) => {
-    const [targetLeft, targetTop] = getScrollTopLeft(targetElement)
-    const [x, y] = [clientX - targetLeft, clientY - targetTop]
-    const [width, height] = targetElement instanceof HTMLElement ?
-                            [targetElement.clientWidth, targetElement.clientHeight] :
-                            [targetElement.innerWidth , targetElement.innerHeight ]
+    const [ targetLeft, targetTop ] = getScrollTopLeft(targetElement)
+    const [ x, y ] = [ clientX - targetLeft, clientY - targetTop ]
+    const [ width, height ] = targetElement instanceof HTMLElement ?
+                            [ targetElement.clientWidth, targetElement.clientHeight ] :
+                            [ targetElement.innerWidth , targetElement.innerHeight  ]
 
     const position = new THREE.Vector3(x - width * 0.5, height * 0.5 - y - 1.0, 0.0).divideScalar(height)
     const movement = new THREE.Vector3(moveX, -moveY, 0.0).divideScalar(height)

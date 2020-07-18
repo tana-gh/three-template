@@ -1,10 +1,10 @@
 import * as Animation  from '../utils/animation'
 import * as SceneState from './scenestate'
+import * as Disposable from './disposable'
 
-export interface IBehaviour {
+export interface IBehaviour extends Disposable.IDisposable {
     timestamp        : number
     state            : string
-    dispose          : () => void
     updateByAnimation: (animationState: Animation.IAnimationState) => void
 }
 

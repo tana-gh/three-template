@@ -1,13 +1,14 @@
-import * as THREE from 'three'
-import * as R     from 'ramda'
-import * as C     from '../../utils/constants'
+import * as THREE      from 'three'
+import * as R          from 'ramda'
+import * as C          from '../../utils/constants'
+import * as Disposable from '../disposable'
 
-export const createLightRoot = (): THREE.Object3D => {
+export const createLightRoot = (): [ THREE.Object3D, Disposable.IDisposable[] ] => {
     const lights = createLights(C.light.count)
     const root   = new THREE.Bone()
     R.forEach(l => root.add(l), lights)
     
-    return root
+    return [ root, [] ]
 }
 
 const createLights = (count: number) => {

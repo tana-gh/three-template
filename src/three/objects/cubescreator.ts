@@ -1,11 +1,13 @@
-import * as THREE from 'three'
-import * as R     from 'ramda'
-import * as C     from '../../utils/constants'
+import * as THREE      from 'three'
+import * as R          from 'ramda'
+import * as C          from '../../utils/constants'
+import * as Disposable from '../disposable'
 
-export const createCubeRootAndBone = (): [ THREE.Object3D, THREE.Object3D ] => {
-    const cubes = createCubes(C.cube.count)
-    const bones = R.map(m => new THREE.Bone(), cubes)
-    const dph   = 2.0 * Math.PI / cubes.length
+export const createCubeRootAndBone = (): [ THREE.Object3D, THREE.Object3D, Disposable.IDisposable[] ] => {
+    const geometry = createGeometry()
+    const cubes    = createCubes(C.cube.count, geometry)
+    const bones    = R.map(m => new THREE.Bone(), cubes)
+    const dph      = 2.0 * Math.PI / cubes.length
 
     R.pipe(
         (x: THREE.Bone[], y: THREE.Mesh[]) => R.zip(x, y),
@@ -25,20 +27,20 @@ export const createCubeRootAndBone = (): [ THREE.Object3D, THREE.Object3D ] => {
     const root = new THREE.Bone()
     root.add(bones[0])
 
-    return [ root, bones[0] ]
+    return [ root, bones[0], [ geometry ] ]
 }
 
-const createCubes = (count: number) => {
-    return composit(count)(R.range(0, count))
+const createGeometry = () => new THREE.BoxGeometry(C.cube.size, C.cube.size, C.cube.size)
+
+const createCubes = (count: number, geometry: THREE.Geometry) => {
+    return composit(count, geometry)(R.range(0, count))
 }
 
 const toHue = (count: number) => (x: number) => R.clamp(0.0, 1.0, x / count)
 
 const toMaterial = (hue: number) => new THREE.MeshPhysicalMaterial(C.cubeMaterial(hue))
 
-const geometry = () => new THREE.BoxGeometry(C.cube.size, C.cube.size, C.cube.size)
-
-const toMesh = (material: THREE.Material) => new THREE.Mesh(geometry(), material)
+const toMesh = (geometry: THREE.Geometry) => (material: THREE.Material) => new THREE.Mesh(geometry, material)
 
 const axis = () => new THREE.Vector3(0.0, C.cube.boneLength, 0.0)
 
@@ -46,9 +48,9 @@ const setAttr = (mesh: THREE.Mesh) => {
     mesh.translateOnAxis(axis(), 1.0)
 }
 
-const composit = (count: number) => R.pipe(
+const composit = (count: number, geometry: THREE.Geometry) => R.pipe(
     R.map(toHue(count)),
     R.map(toMaterial),
-    R.map(toMesh),
+    R.map(toMesh(geometry)),
     R.forEach(setAttr)
 )
