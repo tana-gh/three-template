@@ -12,7 +12,7 @@ export const create = (
     sceneState: SceneState.ISceneState,
     parent    : THREE.Object3D
 ): DisplayObject.IDisplayObject => {
-    const [ root, bone, disposables ] = CubesCreator.createCubeRootAndBone()
+    const [ root, bones, disposables ] = CubesCreator.createCubeRootAndBone()
 
     const store = {}
 
@@ -20,7 +20,7 @@ export const create = (
         timestamp,
         state: 'init',
         dispose() {
-            R.forEach<Disposable.IDisposable>(d => d.dispose())(disposables)
+            R.forEach((d: Disposable.IDisposable) => d.dispose())(disposables)
         },
         rootElement: root,
         elements: {
@@ -33,7 +33,7 @@ export const create = (
                 parent,
                 'main',
                 store,
-                updateByAnimation(root, bone)
+                updateByAnimation(root, bones)
             )(animation)
         }
     }
@@ -43,15 +43,15 @@ export const create = (
 }
 
 const updateByAnimation = (
-    root: THREE.Object3D,
-    bone: THREE.Object3D
+    root : THREE.Object3D,
+    bones: THREE.Object3D[]
 ) => (obj: DisplayObject.IDisplayObject, animation: Animation.IAnimationState, store: any) => {
     switch (obj.state) {
         case 'main': {
-            const th = animation.progress / 1000.0 * 2.0 * Math.PI * C.cube.theta * C.cube.coefficient
-            root.rotateX(th)
-            const ph = -animation.progress / 1000.0 * 2.0 * Math.PI * C.cube.phi * C.cube.coefficient
-            bone.rotateZ(ph)
+            const phi = animation.progress / 1000.0 * 2.0 * Math.PI * C.cube.phi * C.cube.coefficient
+            R.forEach(
+                (b: THREE.Object3D) => b.rotateZ(phi)
+            )(bones)
             return
         }
         default:

@@ -20,7 +20,7 @@ export const create = (
         timestamp,
         state: 'init',
         dispose() {
-            R.forEach<Disposable.IDisposable>(d => d.dispose())(disposables)
+            R.forEach((d: Disposable.IDisposable) => d.dispose())(disposables)
         },
         rootElement: root,
         elements: {
@@ -47,8 +47,8 @@ const updateByAnimation = (
 ) => (obj: DisplayObject.IDisplayObject, animation: Animation.IAnimationState, store: any) => {
     switch (obj.state) {
         case 'main': {
-            const ph = animation.progress / 1000.0 * 2.0 * Math.PI * C.light.phi * C.light.coefficient
-            root.rotateY(ph)
+            const phi = animation.progress / 1000.0 * 2.0 * Math.PI * C.light.phi * C.light.coefficient
+            root.rotateY(phi)
             return
         }
         default:

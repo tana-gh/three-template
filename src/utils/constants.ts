@@ -15,21 +15,20 @@ export const perspective = {
 
 export const cube = {
     coefficient: 1.0,
-    theta      : 0.2,
-    phi        : 0.3,
+    phi        : 0.02,
     count      : 12,
     size       : 0.15,
     boneLength : 1.0
 }
 
 export const cubeMaterial = (hue: number): THREE.MeshPhysicalMaterialParameters => ({
-    color: new THREE.Color().setHSL(hue, 1.0, 0.8),
-    metalness: 0.5,
-    roughness: 0.5,
-    clearcoat: 0.5,
+    color             : new THREE.Color().setHSL(hue, 1.0, 0.8),
+    metalness         : 0.5,
+    roughness         : 0.5,
+    clearcoat         : 0.5,
     clearcoatRoughness: 0.5,
-    reflectivity: 1.0,
-    fog: true
+    reflectivity      : 1.0,
+    fog               : true
 })
 
 export const light = {

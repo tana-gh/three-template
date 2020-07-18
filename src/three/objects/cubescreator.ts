@@ -3,7 +3,7 @@ import * as R          from 'ramda'
 import * as C          from '../../utils/constants'
 import * as Disposable from '../disposable'
 
-export const createCubeRootAndBone = (): [ THREE.Object3D, THREE.Object3D, Disposable.IDisposable[] ] => {
+export const createCubeRootAndBone = (): [ THREE.Object3D, THREE.Object3D[], Disposable.IDisposable[] ] => {
     const geometry = createGeometry()
     const cubes    = createCubes(C.cube.count, geometry)
     const bones    = R.map(m => new THREE.Bone(), cubes)
@@ -27,7 +27,7 @@ export const createCubeRootAndBone = (): [ THREE.Object3D, THREE.Object3D, Dispo
     const root = new THREE.Bone()
     root.add(bones[0])
 
-    return [ root, bones[0], [ geometry ] ]
+    return [ root, bones, [ geometry ] ]
 }
 
 const createGeometry = () => new THREE.BoxGeometry(C.cube.size, C.cube.size, C.cube.size)
