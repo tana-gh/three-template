@@ -3,7 +3,7 @@ import * as R          from 'ramda'
 import * as C          from '../../utils/constants'
 import * as Disposable from '../disposable'
 
-export const createCubeRootAndBone = (): [ THREE.Object3D, THREE.Object3D[], Disposable.IDisposable[] ] => {
+export const createCubeRootAndBones = (): [ THREE.Object3D, THREE.Object3D[], Disposable.IDisposable[] ] => {
     const geometry = createGeometry()
     const cubes    = createCubes(C.cube.count, geometry)
     const bones    = R.map(m => new THREE.Bone(), cubes)
@@ -42,10 +42,10 @@ const toMaterial = (hue: number) => new THREE.MeshPhysicalMaterial(C.cubeMateria
 
 const toMesh = (geometry: THREE.Geometry) => (material: THREE.Material) => new THREE.Mesh(geometry, material)
 
-const axis = () => new THREE.Vector3(0.0, C.cube.boneLength, 0.0)
+const axis = () => new THREE.Vector3(0.0, 1.0, 0.0)
 
 const setAttr = (mesh: THREE.Mesh) => {
-    mesh.translateOnAxis(axis(), 1.0)
+    mesh.translateOnAxis(axis(), C.cube.boneLength)
 }
 
 const composit = (count: number, geometry: THREE.Geometry) => R.pipe(

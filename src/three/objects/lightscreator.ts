@@ -23,12 +23,12 @@ const setHSL = (hsl: number[]) => new THREE.Color().setHSL(hsl[0], hsl[1], hsl[2
 
 const toLight = (hsl: number[]) => new THREE.PointLight(setHSL(hsl))
 
-const pos = () => (Math.random() * 2.0 - 1.0) * C.light.pos
+const pos = () => (Math.random() * 2.0 - 1.0)
 
-const axis = () => new THREE.Vector3(pos(), pos(), pos())
+const axis = () => new THREE.Vector3(pos(), pos(), pos()).normalize()
 
 const setAttr = (mesh: THREE.Light) => {
-    mesh.translateOnAxis(axis(), 1.0)
+    mesh.translateOnAxis(axis(), C.light.radius)
 }
 
 const composit = (count: number) => R.pipe(

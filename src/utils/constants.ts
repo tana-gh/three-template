@@ -40,7 +40,7 @@ export const light = {
     coefficient: 1.0,
     phi        : 0.1,
     count      : 12,
-    pos        : 5.0,
+    radius     : 5.0,
     hsl: {
         s: 0.5,
         l: 0.5
@@ -49,6 +49,17 @@ export const light = {
 
 export const fps = {
     updateDelta: 100.0
+}
+
+export const cursor = {
+    count : 4,
+    w     : 0.004,
+    h     : 0.05,
+    radius: 0.04
+}
+
+export const cursorMaterial = {
+    emissive: new THREE.Color().setHSL(0.0, 0.0, 0.5)
 }
 
 export const classNames = {

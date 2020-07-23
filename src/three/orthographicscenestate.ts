@@ -5,6 +5,8 @@ import * as C             from '../utils/constants'
 import * as Random        from '../utils/random'
 import * as RendererState from './rendererstate'
 import * as SceneState    from './scenestate'
+import * as Cursor        from './ui/cursor'
+import { intersection } from 'ramda'
 
 export const create = (
     interactions: Rx.Observable<Interaction.IInteraction>,
@@ -25,6 +27,15 @@ export const create = (
     camera.lookAt(0.0, 0.0, 0.0)
 
     const sceneState = SceneState.create(scene, camera)
+
+    const now = Date.now()
+
+    const cursor = Cursor.create(
+        now,
+        sceneState,
+        scene,
+        interactions
+    )
 
     return sceneState
 }
