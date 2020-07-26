@@ -12,20 +12,21 @@ export const updateByAnimation = (
     obj         : IBehaviour,
     sceneState  : SceneState.ISceneState,
     initialState: string,
+    globalStore : any,
     store       : any,
-    behaviour   : (obj: IBehaviour, animation: Animation.IAnimationState, store: any) => void
+    behaviour   : (obj: IBehaviour, animation: Animation.IAnimationState, globalStore: any, store: any) => void
 ) => (animation: Animation.IAnimationState): void => {
     switch (obj.state) {
         case 'init':
             obj.state = initialState
-            updateByAnimation(obj, sceneState, initialState, store, behaviour)(animation)
+            updateByAnimation(obj, sceneState, initialState, globalStore, store, behaviour)(animation)
             return
         case 'terminate':
             sceneState.behaviours.delete(obj)
             obj.dispose()
             return
         default:
-            behaviour(obj, animation, store)
+            behaviour(obj, animation, globalStore, store)
     }
 }
 

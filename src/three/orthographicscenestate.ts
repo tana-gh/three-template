@@ -12,7 +12,8 @@ export const create = (
     interactions: Rx.Observable<Interaction.IInteraction>,
     times       : Rx.Observable<Date>,
     random      : Random.IRandom,
-    aspectObj   : RendererState.IAspect
+    aspectObj   : RendererState.IAspect,
+    globalStore : any
 ): SceneState.ISceneState => {
     const scene  = new THREE.Scene()
     const camera = new THREE.OrthographicCamera(
@@ -33,6 +34,7 @@ export const create = (
     const cursor = Cursor.create(
         now,
         sceneState,
+        globalStore,
         scene,
         interactions
     )

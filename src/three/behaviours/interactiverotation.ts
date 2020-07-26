@@ -9,6 +9,7 @@ import * as Behaviour   from '../behaviour'
 export const create = (
     timestamp   : number,
     sceneState  : SceneState.ISceneState,
+    globalStore : any,
     interactions: Rx.Observable<Interaction.IInteraction>,
     root        : THREE.Object3D
 ): Behaviour.IBehaviour => {
@@ -31,6 +32,7 @@ export const create = (
                 this,
                 sceneState,
                 'main',
+                globalStore,
                 store,
                 updateByAnimation(root)
             )(animation)
@@ -43,7 +45,12 @@ export const create = (
 
 const updateByAnimation = (
     root: THREE.Object3D
-) => (obj: Behaviour.IBehaviour, animation: Animation.IAnimationState, store: any) => {
+) => (
+    obj        : Behaviour.IBehaviour,
+    animation  : Animation.IAnimationState,
+    globalStore: any,
+    store      : any
+) => {
     switch (obj.state) {
         case 'main': {
             const theta = C.interactiveRotation.theta * C.interactiveRotation.coefficient

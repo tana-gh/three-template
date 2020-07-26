@@ -8,9 +8,10 @@ import * as Disposable    from '../disposable'
 import * as CubesCreator  from './cubescreator'
 
 export const create = (
-    timestamp : number,
-    sceneState: SceneState.ISceneState,
-    parent    : THREE.Object3D
+    timestamp   : number,
+    sceneState  : SceneState.ISceneState,
+    globalStore : any,
+    parent      : THREE.Object3D
 ): DisplayObject.IDisplayObject => {
     const [ root, bones, disposables ] = CubesCreator.createCubeRootAndBones()
 
@@ -32,6 +33,7 @@ export const create = (
                 sceneState,
                 parent,
                 'main',
+                globalStore,
                 store,
                 updateByAnimation(root)
             )(animation)
@@ -43,8 +45,13 @@ export const create = (
 }
 
 const updateByAnimation = (
-    root : THREE.Object3D
-) => (obj: DisplayObject.IDisplayObject, animation: Animation.IAnimationState, store: any) => {
+    root: THREE.Object3D
+) => (
+    obj        : DisplayObject.IDisplayObject,
+    animation  : Animation.IAnimationState,
+    globalStore: any,
+    store      : any
+) => {
     switch (obj.state) {
         case 'main': {
             const phi = animation.progress / 1000.0 * 2.0 * Math.PI * C.cube.phi * C.cube.coefficient

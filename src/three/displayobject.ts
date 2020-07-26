@@ -15,14 +15,15 @@ export const updateByAnimation = (
     sceneState  : SceneState.ISceneState,
     parent      : THREE.Object3D,
     initialState: string,
+    globalStore : any,
     store       : any,
-    behaviour   : (obj: IDisplayObject, animation: Animation.IAnimationState, store: any) => void
+    behaviour   : (obj: IDisplayObject, animation: Animation.IAnimationState, globalStore: any, store: any) => void
 ) => (animation: Animation.IAnimationState): void => {
     switch (obj.state) {
         case 'init':
             parent.add(obj.rootElement)
             obj.state = initialState
-            updateByAnimation(obj, sceneState, parent, initialState, store, behaviour)(animation)
+            updateByAnimation(obj, sceneState, parent, initialState, globalStore, store, behaviour)(animation)
             return
         case 'terminate':
             parent.remove(obj.rootElement)
@@ -30,7 +31,7 @@ export const updateByAnimation = (
             obj.dispose()
             return
         default:
-            behaviour(obj, animation, store)
+            behaviour(obj, animation, globalStore, store)
     }
 }
 

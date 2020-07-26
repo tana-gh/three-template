@@ -11,6 +11,7 @@ import * as CursorCreator from './cursorcreator'
 export const create = (
     timestamp   : number,
     sceneState  : SceneState.ISceneState,
+    globalStore : any,
     parent      : THREE.Object3D,
     interactions: Rx.Observable<Interaction.IInteraction>
 ): DisplayObject.IDisplayObject => {
@@ -41,6 +42,7 @@ export const create = (
                 sceneState,
                 parent,
                 'main',
+                globalStore,
                 store,
                 updateByAnimation(root)
             )(animation)
@@ -52,8 +54,13 @@ export const create = (
 }
 
 const updateByAnimation = (
-    root : THREE.Object3D
-) => (obj: DisplayObject.IDisplayObject, animation: Animation.IAnimationState, store: any) => {
+    root: THREE.Object3D
+) => (
+    obj        : DisplayObject.IDisplayObject,
+    animation  : Animation.IAnimationState,
+    globalStore: any,
+    store      : any
+) => {
     switch (obj.state) {
         case 'main': {
             const { x, y } = store

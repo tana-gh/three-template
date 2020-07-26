@@ -13,7 +13,8 @@ export const create = (
     interactions: Rx.Observable<Interaction.IInteraction>,
     times       : Rx.Observable<Date>,
     random      : Random.IRandom,
-    aspectObj   : RendererState.IAspect
+    aspectObj   : RendererState.IAspect,
+    globalStore : any
 ): SceneState.ISceneState => {
     const scene  = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(
@@ -32,18 +33,21 @@ export const create = (
     const cubes = Cubes.create(
         now,
         sceneState,
+        globalStore,
         scene
     )
 
     const lights = Lights.create(
         now,
         sceneState,
+        globalStore,
         scene
     )
 
     const interactiveRotation = InteractiveRotation.create(
         now,
         sceneState,
+        globalStore,
         interactions,
         cubes.elements.root
     )

@@ -21,9 +21,11 @@ export const load = (parent: HTMLElement): IState => {
 
     const [width, height] = [parent.clientWidth, parent.clientHeight]
     const rendererState   = RendererState.create(width, height)
+
+    const globalStore = {}
     
-    const perspectiveSceneState  = PerspectiveSceneState .create(interactions, times, random, rendererState.aspectObj)
-    const orthographicSceneState = OrthographicSceneState.create(interactions, times, random, rendererState.aspectObj)
+    const perspectiveSceneState  = PerspectiveSceneState .create(interactions, times, random, rendererState.aspectObj, globalStore)
+    const orthographicSceneState = OrthographicSceneState.create(interactions, times, random, rendererState.aspectObj, globalStore)
 
     RendererState.addScenes(rendererState, perspectiveSceneState, orthographicSceneState)
 
