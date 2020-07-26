@@ -8,10 +8,10 @@ import * as Disposable    from '../disposable'
 import * as CubesCreator  from './cubescreator'
 
 export const create = (
-    timestamp   : number,
-    sceneState  : SceneState.ISceneState,
-    globalStore : any,
-    parent      : THREE.Object3D
+    timestamp  : number,
+    sceneState : SceneState.ISceneState,
+    globalStore: any,
+    parent     : THREE.Object3D
 ): DisplayObject.IDisplayObject => {
     const [ root, bones, disposables ] = CubesCreator.createCubeRootAndBones()
 

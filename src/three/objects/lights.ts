@@ -8,10 +8,10 @@ import * as Disposable    from '../disposable'
 import * as LightsCreator from './lightscreator'
 
 export const create = (
-    timestamp   : number,
-    sceneState  : SceneState.ISceneState,
-    globalStore : any,
-    parent      : THREE.Object3D
+    timestamp  : number,
+    sceneState : SceneState.ISceneState,
+    globalStore: any,
+    parent     : THREE.Object3D
 ): DisplayObject.IDisplayObject => {
     const [ root, disposables ] = LightsCreator.createLightRoot()
 
