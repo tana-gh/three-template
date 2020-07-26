@@ -1,13 +1,10 @@
 import * as THREE       from 'three'
 import * as Rx          from 'rxjs'
-import * as RxOp        from 'rxjs/operators'
-import * as R           from 'ramda'
 import * as Animation   from '../../utils/animation'
 import * as Interaction from '../../utils/interaction'
 import * as C           from '../../utils/constants'
 import * as SceneState  from '../scenestate'
 import * as Behaviour   from '../behaviour'
-import { Vector3 } from 'three'
 
 export const create = (
     timestamp   : number,

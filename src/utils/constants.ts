@@ -53,9 +53,9 @@ export const fps = {
 
 export const cursor = {
     count : 4,
-    w     : 0.004,
-    h     : 0.05,
-    radius: 0.04
+    w     : 0.002,
+    h     : 0.03,
+    radius: 0.03
 }
 
 export const cursorMaterial = {
