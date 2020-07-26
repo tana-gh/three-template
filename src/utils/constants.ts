@@ -52,14 +52,23 @@ export const fps = {
 }
 
 export const cursor = {
-    count : 4,
-    w     : 0.002,
-    h     : 0.03,
-    radius: 0.03
+    width : 0.2,
+    height: 0.2
 }
 
-export const cursorMaterial = {
-    emissive: new THREE.Color().setHSL(0.0, 0.0, 0.5)
+export const cursorUniforms = {
+    lineWeight: {
+        type : 'float',
+        value: 0.01
+    },
+    lineInner: {
+        type : 'float',
+        value: 0.4,
+    },
+    lineOuter: {
+        type : 'float',
+        value: 1.0
+    }
 }
 
 export const classNames = {

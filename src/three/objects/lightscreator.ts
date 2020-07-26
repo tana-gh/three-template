@@ -11,9 +11,8 @@ export const createLightRoot = (): [ THREE.Object3D, Disposable.IDisposable[] ] 
     return [ root, [] ]
 }
 
-const createLights = (count: number) => {
-    return composit(count)(R.range(0, count))
-}
+const createLights = (count: number) =>
+    composit(count)(R.range(0, count))
 
 const toHue = (count: number) => (x: number) => R.clamp(0.0, 1.0, x / count)
 

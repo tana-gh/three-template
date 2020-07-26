@@ -22,7 +22,7 @@ export const create = (
     const subscription =
         interactions
             .subscribe(
-                i => { store = { x: i.position.x, y: i.position.y }; console.log(store.y) }
+                i => store = { x: i.position.x, y: i.position.y }
             )
 
     const displayobject: DisplayObject.IDisplayObject = {

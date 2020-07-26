@@ -1,38 +1,48 @@
-import * as THREE      from 'three'
-import * as R          from 'ramda'
-import * as C          from '../../utils/constants'
-import * as Disposable from '../disposable'
+import * as THREE        from 'three'
+import * as R            from 'ramda'
+import * as C            from '../../utils/constants'
+import * as Disposable   from '../disposable'
+import * as CursorShader from './cursorshader'
 
 export const createCursorRoot = (): [ THREE.Object3D, Disposable.IDisposable[] ] => {
     const geometry = createGeometry()
-    const planes   = createPlanes(geometry)
+    const cursor   = createCursor(geometry)
     const root     = new THREE.Bone()
     
-    R.forEach<THREE.Object3D>(p => root.add(p))(planes)
+    root.add(cursor)
 
     return [ root, [ geometry ] ]
 }
 
-const createGeometry = () => new THREE.PlaneGeometry(C.cursor.w, C.cursor.h)
+const createGeometry = () => {
+    const geometry = new THREE.PlaneBufferGeometry(C.cursor.width, C.cursor.height)
+    const coords   = new Float32Array(
+        R.pipe(
+            R.splitEvery(3),
+            R.map((vec: number[]) => [Math.sign(vec[0]), Math.sign(vec[1])]),
+            R.unnest
+        )(Array.from(geometry.attributes.position.array))
+    )
 
-const createPlanes = (geometry: THREE.Geometry) => {
-    return composit(geometry)(R.range(0, C.cursor.count))
+    geometry.setAttribute('coord', new THREE.BufferAttribute(coords, 2))
+
+    return geometry
 }
 
-const getMaterial = () => new THREE.MeshLambertMaterial(C.cursorMaterial)
+const createCursor = (geometry: THREE.BufferGeometry) => new THREE.Mesh(geometry, getMaterial())
 
-const toMesh = (geometry: THREE.Geometry) => (index: number): [ number, THREE.Mesh ] =>
-    [ index, new THREE.Mesh(geometry, getMaterial()) ]
+const getMaterial = () => {
+    const material = new THREE.ShaderMaterial({
+        vertexShader  : CursorShader.vertex,
+        fragmentShader: CursorShader.fragment,
+        uniforms      : C.cursorUniforms
+    })
 
-const axis = () => new THREE.Vector3(0.0, 1.0, 0.0)
+    material.blending      = THREE.CustomBlending
+    material.blendEquation = THREE.AddEquation
+    material.blendSrc      = THREE.SrcAlphaFactor
+    material.blendDst      = THREE.OneMinusSrcAlphaFactor
 
-const setAttr = ([ index, mesh ]: [ number, THREE.Mesh ]) => {
-    mesh.rotateZ(Math.PI * 0.5 * index)
-    mesh.translateOnAxis(axis(), C.cursor.radius)
+    return material
 }
-
-const composit = (geometry: THREE.Geometry) => R.pipe(
-    R.map(toMesh(geometry)),
-    R.forEach(setAttr),
-    R.map<[ number, THREE.Mesh ], THREE.Mesh>(([ i, m ]) => m)
-)
+    
