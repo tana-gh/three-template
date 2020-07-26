@@ -6,7 +6,6 @@ import * as Random        from '../utils/random'
 import * as RendererState from './rendererstate'
 import * as SceneState    from './scenestate'
 import * as Cursor        from './ui/cursor'
-import { intersection } from 'ramda'
 
 export const create = (
     interactions: Rx.Observable<Interaction.IInteraction>,
